@@ -1,3 +1,5 @@
+console.log("🎯 Starting server.js...");
+
 require("dotenv").config();
 const express = require("express");
 const app = express();
@@ -9,7 +11,6 @@ const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
 const connectDB = require("./config/dbConn");
 const mongoose = require("mongoose");
-const { console } = require("inspector");
 const PORT = process.env.PORT || 3500;
 
 connectDB();
@@ -25,6 +26,8 @@ app.use(cookieParser());
 app.use("/", express.static(path.join(__dirname, "/public")));
 
 app.use("/", require("./routes/root"));
+
+app.use("/users", require("./routes/userRoutes"));
 
 app.all(/.*/, (req, res) => {
 	res.status(404);

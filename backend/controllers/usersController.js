@@ -8,7 +8,7 @@ const bcrpyt = require("bcrypt");
 // @access Private
 const getAllUsers = asyncHandler(async (req, res) => {
 	const users = await User.find().select("-password").lean();
-	if (!users) {
+	if (!users?.length) {
 		return res.status(400).json({ message: "No users found" });
 	}
 	res.json(users);
@@ -35,7 +35,7 @@ const createNewUser = asyncHandler(async (req, res) => {
 	// Hash Password
 	const hashedPassword = await bcrpyt.hash(password, 10); // salt rounds
 
-	const userObject = { username, hashedPassword, roles };
+	const userObject = { username, password: hashedPassword, roles };
 
 	// Create and Store new User
 
@@ -105,9 +105,8 @@ const deleteUser = asyncHandler(async (req, res) => {
 		return res.status(400).json({ message: "User ID Required" });
 	}
 
-	const notes = await findOne({ user: id }).lean().exec();
-
-	if (notes?.length) {
+	const note = await Note.findOne({ user: id }).lean().exec();
+	if (note) {
 		return res.status(400).json({ message: "User has assigned notes" });
 	}
 
@@ -119,7 +118,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 
 	const result = await user.deleteOne();
 
-	const reply = `Username ${result.username} with ID ${result._id} deleted`;
+	const reply = `Username ${user.username} with ID ${user._id} deleted`;
 
 	res.json(reply);
 });

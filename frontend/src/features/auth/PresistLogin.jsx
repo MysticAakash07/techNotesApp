@@ -71,4 +71,3 @@ const PersistLogin = () => {
 	return content;
 };
 export default PersistLogin;
- 

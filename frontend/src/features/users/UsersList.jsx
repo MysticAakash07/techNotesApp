@@ -1,7 +1,12 @@
+import PulseLoader from "react-spinners/PulseLoader.js";
 import { useGetUsersQuery } from "./usersApiSlice.js";
 import User from "./User";
+import useTitle from "../../hooks/useTitle";
 
 const UsersList = () => {
+	
+	useTitle("techNotes: Users List");
+
 	const {
 		data: users,
 		isLoading,
@@ -16,7 +21,7 @@ const UsersList = () => {
 
 	let content;
 
-	if (isLoading) content = <p>Loading...</p>;
+	if (isLoading) content = <PulseLoader color="#FFF" size={10} />;
 
 	if (isError) {
 		content = <p className="errmsg">{error?.data?.message}</p>;

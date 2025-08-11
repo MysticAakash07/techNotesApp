@@ -3,9 +3,9 @@ import { setCredentials } from "../../features/auth/authSlice";
 
 const baseQuery = fetchBaseQuery({
 	baseUrl:
-		process.env.NODE_ENV === "production"
-			? process.env.REACT_APP_API_PROD_URL
-			: process.env.REACT_APP_API_DEV_URL,
+		import.meta.env.MODE === "production"
+			? import.meta.env.VITE_API_PROD_URL
+			: import.meta.env.VITE_API_DEV_URL,
 	credentials: "include",
 	prepareHeaders: (headers, { getState }) => {
 		const token = getState().auth.token;

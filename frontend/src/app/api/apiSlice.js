@@ -4,12 +4,11 @@ import { setCredentials } from "../../features/auth/authSlice";
 const baseQuery = fetchBaseQuery({
 	baseUrl:
 		process.env.NODE_ENV === "production"
-			? "https://your-render-app-name.onrender.com"
-			: "http://localhost:3500",
+			? process.env.REACT_APP_API_PROD_URL
+			: process.env.REACT_APP_API_DEV_URL,
 	credentials: "include",
 	prepareHeaders: (headers, { getState }) => {
 		const token = getState().auth.token;
-
 		if (token) {
 			headers.set("authorization", `Bearer ${token}`);
 		}
